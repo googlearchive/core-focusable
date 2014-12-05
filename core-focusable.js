@@ -5,7 +5,7 @@
  * Elements using this mixin will receive attributes reflecting the focus, pressed
  * and disabled states.
  *
- * @element Polymer.CoreFocusable
+ * @mixin Polymer.CoreFocusable
  * @status unstable
  */
 
