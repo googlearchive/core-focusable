@@ -81,11 +81,11 @@ Polymer.CoreFocusable = {
     if (this.disabled) {
       this.style.pointerEvents = 'none';
       this.removeAttribute('tabindex');
-      this.setAttribute('aria-disabled', '');
+      this.setAttribute('aria-disabled', 'true');
     } else {
       this.style.pointerEvents = '';
       this.setAttribute('tabindex', 0);
-      this.removeAttribute('aria-disabled');
+      this.setAttribute('aria-disabled', 'false');
     }
   },
 
