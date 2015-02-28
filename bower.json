@@ -2,6 +2,11 @@
   "name": "core-focusable",
   "private": false,
   "dependencies": {
-    "polymer": "Polymer/polymer#master"
+    "polymer": "Polymer/polymer#0.8-preview"
+  },
+  "devDependencies": {
+    "web-component-tester": "~2.2.4",
+    "test-fixture": "polymer/test-fixture#~0.1.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#~0.5.5"
   }
 }

@@ -1,0 +1,63 @@
+<!doctype html>
+<!--
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+<head>
+  <title>core-disabled-state</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+  <script src="../../test-fixture/test-fixture-mocha.js"></script>
+
+  <link rel="import" href="../../polymer/polymer.html">
+  <link rel="import" href="../../test-fixture/test-fixture.html">
+  <link rel="import" href="../core-disabled-state.html">
+</head>
+<body>
+  <test-fixture id="TrivialDisabledState">
+    <template is="x-template">
+      <div>
+        <core-disabled-state></core-disabled-state>
+      </div>
+    </template>
+  </test-fixture>
+
+  <script>
+    suite('<core-disabled-state>', function() {
+      var disabledState;
+      var disableTarget;
+
+      setup(function() {
+        disableTarget = fixture('TrivialDisabledState');
+        disabledState = disableTarget.querySelector('core-disabled-state');
+      });
+
+      test('targets the immediate parent in lieu of a host', function() {
+        expect(disableTarget).to.be.eql(disabledState.target);
+      });
+
+      suite('when disabled is true', function() {
+        test('target receives a disabled attribute', function() {
+          disabledState.disabled = true;
+          expect(disableTarget.hasAttribute('disabled')).to.be.eql(true);
+        });
+      });
+
+      suite('when disabled is false', function() {
+        test('target loses the disabled attribute', function() {
+          disabledState.disabled = true;
+          expect(disableTarget.hasAttribute('disabled')).to.be.eql(true);
+          disabledState.disabled = false;
+          expect(disableTarget.hasAttribute('disabled')).to.be.eql(false);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
