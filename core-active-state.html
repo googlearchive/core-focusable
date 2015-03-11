@@ -71,24 +71,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         type: Boolean,
         observer: 'disabledChanged',
         value: false
-      },
-
-      boundDownHandler: {
-        value: function() {
-          return this._setPress
-          return this.onTargetDown.bind(this);
-        }
-      },
-
-      boundUpHandler: {
-        value: function() {
-          return this.onTargetUp.bind(this);
-        }
       }
     },
 
     get target() {
       return this.host || this.parentNode;
+    },
+
+    configure: function() {
+      return {
+        boundDownHandler: this.onTargetDown.bind(this),
+        boundUpHandler: this.onTargetUp.bind(this)
+      };
     },
 
     ready: function() {
@@ -104,20 +98,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return;
       }
 
-      this.target.addEventListener('mousedown', this.boundDownHandler, this);
-      this.target.addEventListener('mouseup', this.boundUpHandler, this);
+      this.target.addEventListener('mousedown', this.boundDownHandler);
+      this.target.addEventListener('mouseup', this.boundUpHandler);
+      this.target.addEventListener('keydown', this.boundDownHandler);
+      this.target.addEventListener('keyup', this.boundUpHandler);
     },
 
     detached: function() {
-      this.target.removeEventListener('mousedown', this.boundDownHandler, this);
-      this.target.removeEventListener('mouseup', this.boundUpHandler, this);
+      this.target.removeEventListener('mousedown', this.boundDownHandler);
+      this.target.removeEventListener('mouseup', this.boundUpHandler);
+      this.target.removeEventListener('keydown', this.boundDownHandler);
+      this.target.removeEventListener('keyup', this.boundUpHandler);
     },
 
-    onTargetDown: function() {
+    onTargetDown: function(event) {
+      if (event.type === 'keydown' && event.keyCode !== 32) {
+        return;
+      }
+
       this._setPressed(true);
     },
 
     onTargetUp: function() {
+      if (event.type === 'keyup' &&
+          event.keyCode !== 32) {
+        return;
+      }
+
+      if (this.pressed &&
+          event.type === 'keyup' &&
+          this.target instanceof HTMLElement) {
+
+        window.setTimeout(function() {
+          this.target.click();
+        }.bind(this), 0);
+      }
+
       this._setPressed(false);
     },
 

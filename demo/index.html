@@ -26,11 +26,12 @@ license that can be found in the LICENSE file.
       font-size: 14px;
       display: inline-block;
       position: relative;
-      padding: 1em;
+      padding: 0.5em 1em;
       cursor: pointer;
       border: 1px solid #444;
       background-color: #eee;
       color: #444;
+      border-radius: 0.25em;
     }
 
     stateful-element[focused],
@@ -57,6 +58,7 @@ license that can be found in the LICENSE file.
   </style>
 </head>
 <body>
+
   <template is="quick-element" name="stateful-element">
     <core-disabled-state disabled="{{disabled}}"></core-disabled-state>
     <core-focused-state focused="{{focused}}" disabled="[[disabled]]"></core-focused-state>
@@ -64,11 +66,10 @@ license that can be found in the LICENSE file.
     <content></content>
   </template>
 
-  <button id="Qux" tabindex="0" toggle>Native Button</button>
+  <button id="Qux" tabindex="0">Native Button</button>
   <stateful-element id="Foo" tabindex="0">Custom Button</stateful-element>
   <stateful-element id="Baz" tabindex="0">Custom Toggle</stateful-element>
   <stateful-element id="Bar" tabindex="0">Enable / Disable</stateful-element>
-
 
   <script>
     Baz.toggle = true;
@@ -77,10 +78,6 @@ license that can be found in the LICENSE file.
       Foo.disabled = !Foo.disabled;
       Baz.disabled = !Baz.disabled;
       Qux.disabled = !Qux.disabled;
-    });
-
-    Qux.addEventListener('click', function() {
-      console.log('button click');
     });
   </script>
 </body>

@@ -48,23 +48,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       targetOldTabIndex: {
         type: String,
         value: null
-      },
-
-      boundFocusHandler: {
-        value: function() {
-          return this.onTargetFocus.bind(this);
-        }
-      },
-
-      boundBlurHandler: {
-        value: function() {
-          return this.onTargetBlur.bind(this);
-        }
       }
     },
 
     get target () {
       return this.host || this.parentNode;
+    },
+
+    configure: function() {
+      return {
+        boundFocusHandler: this._setFocused.bind(this, true),
+        boundBlurHandler: this._setFocused.bind(this, false)
+      };
     },
 
     ready: function() {
@@ -83,14 +78,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     detached: function() {
       this.target.removeEventListener('focus', this.boundFocusHandler, true);
       this.target.removeEventListener('blur', this.boundBlurHandler, true);
-    },
-
-    onTargetFocus: function() {
-      this._setFocused(true);
-    },
-
-    onTargetBlur: function() {
-      this._setFocused(false);
     },
 
     focusedChanged: function() {
