@@ -7,7 +7,6 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <link rel="import" href="../polymer/polymer.html">
-<dom-module id="core-active-state"></dom-module>
 <script>
   Polymer({
     is: 'core-active-state',
@@ -76,27 +75,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       boundDownHandler: {
         value: function() {
-          return function() {
-            return this._setPressed(true);
-          }.bind(this);
+          return this._setPress
+          return this.onTargetDown.bind(this);
         }
       },
 
       boundUpHandler: {
         value: function() {
-          return function() {
-            return this._setPressed(false);
-          }.bind(this);
+          return this.onTargetUp.bind(this);
         }
       }
-
     },
 
     get target() {
       return this.host || this.parentNode;
     },
 
+    ready: function() {
+      this.afterReady = true;
+      // TODO(cdata): We this as a workaround for polymer/polymer#1285
+      if (this.isAttached) {
+        this.attached();
+      }
+    },
+
     attached: function() {
+      if (!this.afterReady) {
+        return;
+      }
+
       this.target.addEventListener('mousedown', this.boundDownHandler, this);
       this.target.addEventListener('mouseup', this.boundUpHandler, this);
     },
@@ -104,6 +111,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     detached: function() {
       this.target.removeEventListener('mousedown', this.boundDownHandler, this);
       this.target.removeEventListener('mouseup', this.boundUpHandler, this);
+    },
+
+    onTargetDown: function() {
+      this._setPressed(true);
+    },
+
+    onTargetUp: function() {
+      this._setPressed(false);
     },
 
     pressedChanged: function() {
@@ -129,6 +144,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._setPressed(false);
         this._setActive(false);
       }
-    },
+    }
   });
 </script>

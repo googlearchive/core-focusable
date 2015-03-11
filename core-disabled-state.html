@@ -7,7 +7,6 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <link rel="import" href="../polymer/polymer.html">
-<dom-module id="core-disabled-state"></dom-module>
 <script>
   Polymer({
     is: 'core-disabled-state',
@@ -46,7 +45,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       return this.host || this.parentNode;
     },
 
+    ready: function() {
+      this.afterReady = true;
+      // TODO(cdata): We this as a workaround for polymer/polymer#1285
+      if (this.isAttached) {
+        this.attached();
+      }
+    },
+
     attached: function() {
+      if (!this.afterReady) {
+        return;
+      }
+
       this.disabledAttributeObserver.observe(this.target, {
         attributes: true,
         attributeFilter: [

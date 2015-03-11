@@ -14,9 +14,74 @@ license that can be found in the LICENSE file.
   <title>core-focusable</title>
 
   <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="../../font-roboto/roboto.html">
+  <link rel="import" href="./quick-element.html">
+  <link rel="import" href="../core-focused-state.html">
+  <link rel="import" href="../core-active-state.html">
+  <link rel="import" href="../core-disabled-state.html">
+  <style>
+    stateful-element,
+    button {
+      font-family: RobotoDraft;
+      font-size: 14px;
+      display: inline-block;
+      position: relative;
+      padding: 1em;
+      cursor: pointer;
+      border: 1px solid #444;
+      background-color: #eee;
+      color: #444;
+    }
 
+    stateful-element[focused],
+    button:focus {
+      background-color: #ccf;
+      color: #448;
+      border-color: #448;
+    }
+
+    stateful-element[disabled],
+    button[disabled] {
+      color: #888;
+      background-color: #ddd;
+      border-color: #aaa;
+
+    }
+
+    stateful-element[active],
+    button:active {
+      background-color: #aaf;
+      color: #eef;
+      border-color: #88a;
+    }
+  </style>
 </head>
 <body>
+  <template is="quick-element" name="stateful-element">
+    <core-disabled-state disabled="{{disabled}}"></core-disabled-state>
+    <core-focused-state focused="{{focused}}" disabled="[[disabled]]"></core-focused-state>
+    <core-active-state active="{{active}}" disabled="[[disabled]]" toggle="[[toggle]]"></core-active-state>
+    <content></content>
+  </template>
 
+  <button id="Qux" tabindex="0" toggle>Native Button</button>
+  <stateful-element id="Foo" tabindex="0">Custom Button</stateful-element>
+  <stateful-element id="Baz" tabindex="0">Custom Toggle</stateful-element>
+  <stateful-element id="Bar" tabindex="0">Enable / Disable</stateful-element>
+
+
+  <script>
+    Baz.toggle = true;
+
+    Bar.addEventListener('click', function() {
+      Foo.disabled = !Foo.disabled;
+      Baz.disabled = !Baz.disabled;
+      Qux.disabled = !Qux.disabled;
+    });
+
+    Qux.addEventListener('click', function() {
+      console.log('button click');
+    });
+  </script>
 </body>
 </html>

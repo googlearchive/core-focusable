@@ -7,7 +7,6 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <link rel="import" href="../polymer/polymer.html">
-<dom-module id="core-focused-state"></dom-module>
 <script>
   Polymer({
     is: 'core-focused-state',
@@ -53,23 +52,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       boundFocusHandler: {
         value: function() {
-          return function() {
-            return this._setFocused(true);
-          }.bind(this);
+          return this.onTargetFocus.bind(this);
         }
       },
 
       boundBlurHandler: {
         value: function() {
-          return function() {
-            return this._setFocused(false);
-          }.bind(this);
+          return this.onTargetBlur.bind(this);
         }
       }
     },
 
     get target () {
       return this.host || this.parentNode;
+    },
+
+    ready: function() {
+      this.afterReady = true;
+      // TODO(cdata): We this as a workaround for polymer/polymer#1285
+      if (this.isAttached) {
+        this.attached();
+      }
     },
 
     attached: function() {
@@ -80,6 +83,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     detached: function() {
       this.target.removeEventListener('focus', this.boundFocusHandler, true);
       this.target.removeEventListener('blur', this.boundBlurHandler, true);
+    },
+
+    onTargetFocus: function() {
+      this._setFocused(true);
+    },
+
+    onTargetBlur: function() {
+      this._setFocused(false);
     },
 
     focusedChanged: function() {
@@ -93,7 +104,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     disabledChanged: function() {
       if (this.disabled) {
         if (this.target.hasAttribute('tabindex')) {
-          this.hostOldTabIndex = this.target.tabIndex;
+          this.targetOldTabIndex = this.target.tabIndex;
         }
 
         this.focused = false;
