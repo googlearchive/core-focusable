@@ -112,7 +112,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     onTargetDown: function(event) {
-      if (event.type === 'keydown' && event.keyCode !== 32) {
+      if (event.type === 'keydown' &&
+          event.keyCode !== 32 &&
+          event.keyCode !== 13) {
+        return;
+      }
+
+      if (event.keyCode === 13) {
+        window.setTimeout(function() {
+          this.click();
+        }.bind(this), 1);
+
         return;
       }
 
