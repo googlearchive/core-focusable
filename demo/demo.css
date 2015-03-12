@@ -1,0 +1,35 @@
+stateful-element,
+button {
+  font-family: RobotoDraft;
+  font-size: 14px;
+  display: inline-block;
+  position: relative;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  border: 1px solid #444;
+  background-color: #eee;
+  color: #444;
+  border-radius: 0.25em;
+}
+
+stateful-element[focused],
+button:focus {
+  background-color: #ccf;
+  color: #448;
+  border-color: #448;
+}
+
+stateful-element[disabled],
+button[disabled] {
+  color: #888;
+  background-color: #ddd;
+  border-color: #aaa;
+
+}
+
+stateful-element[active],
+button:active {
+  background-color: #aaf;
+  color: #eef;
+  border-color: #88a;
+}
