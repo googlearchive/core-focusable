@@ -83,6 +83,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
 
           this.target.setAttribute('disabled', '');
+          this.target.setAttribute('aria-disabled', '');
         }
 
         this.target.style.pointerEvents = 'none';
@@ -94,6 +95,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         this.target.removeAttribute('disabled');
+        this.target.removeAttribute('aria-disabled');
         this.targetOldPointerEvents = null;
       }
     }
