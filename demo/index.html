@@ -37,13 +37,14 @@ license that can be found in the LICENSE file.
 
   <script>
     Baz.toggle = true;
+    ['click', 'keydown', 'keyup'].forEach(function(event) {
+      Qux.addEventListener(event, function() {
+        console.log('button', event);
+      });
 
-    Qux.addEventListener('click', function() {
-      console.count('button click');
-    });
-
-    Foo.addEventListener('click', function() {
-      console.count('custom click');
+      Foo.addEventListener(event, function() {
+        console.log('custom', event);
+      });
     });
 
     Bar.addEventListener('click', function() {
