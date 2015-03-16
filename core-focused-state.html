@@ -62,14 +62,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       };
     },
 
-    ready: function() {
-      this.afterReady = true;
-      // TODO(cdata): We this as a workaround for polymer/polymer#1285
-      if (this.isAttached) {
-        this.attached();
-      }
-    },
-
     attached: function() {
       this.target.addEventListener('focus', this.boundFocusHandler, true);
       this.target.addEventListener('blur', this.boundBlurHandler, true);
