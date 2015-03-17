@@ -117,7 +117,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this._setPressed(true);
     },
 
-    onTargetUp: function() {
+    onTargetUp: function(event) {
       if (event.type === 'keyup' &&
           event.keyCode !== 32) {
         return;

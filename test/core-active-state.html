@@ -51,6 +51,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         expect(activeTarget).to.be.eql(activeState.target);
       });
 
+      suite('active state with toggle attribute', function() {
+        setup(function() {
+          activeTarget = fixture('ToggleActiveState');
+          activeState = activeTarget.querySelector('core-active-state');
+        });
+
+        suite('when clicked', function() {
+          test('is activated', function(done) {
+            downAndUp(activeTarget, function() {
+              try {
+                expect(activeTarget.hasAttribute('active')).to.be.eql(true);
+                done();
+              } catch (e) {
+                done(e);
+              }
+            });
+          });
+
+          test('is deactivated by a subsequent click', function(done) {
+            downAndUp(activeTarget, function() {
+              downAndUp(activeTarget, function() {
+                try {
+                  expect(activeTarget.hasAttribute('active')).to.be.eql(false);
+                  done();
+                } catch (e) {
+                  done(e);
+                }
+              });
+            });
+          });
+        });
+      });
+
       suite('trivial active state', function() {
         suite('when mouse is down', function() {
           test('target gets an active attribute', function() {
@@ -67,6 +100,63 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             up(activeTarget);
             expect(activeTarget.hasAttribute('active')).to.be.eql(false);
           });
+        });
+      });
+
+      suite('when space is pressed', function() {
+        test('triggers a click event', function(done) {
+          activeTarget.addEventListener('click', function() {
+            done();
+          });
+          pressSpace(activeTarget);
+        });
+
+        test('only triggers click after the key is released', function(done) {
+          var keyupTriggered = false;
+
+          activeTarget.addEventListener('keyup', function() {
+            keyupTriggered = true;
+          });
+
+          activeTarget.addEventListener('click', function() {
+            try {
+              expect(keyupTriggered).to.be.eql(true);
+              done();
+            } catch (e) {
+              done(e);
+            }
+          });
+
+          pressSpace(activeTarget);
+        });
+      });
+
+      suite('when enter is pressed', function() {
+        test('triggers a click event', function(done) {
+          activeTarget.addEventListener('click', function() {
+            done();
+          });
+
+          pressEnter(activeTarget);
+        });
+
+        test('only triggers click before the key is released', function(done) {
+          var keyupTriggered = false;
+
+          activeTarget.addEventListener('keyup', function() {
+            keyupTriggered = true;
+          });
+
+          activeTarget.addEventListener('click', function() {
+            try {
+              expect(keyupTriggered).to.be.eql(false);
+              done();
+            } catch (e) {
+              done(e);
+            }
+          });
+
+          pressEnter(activeTarget);
         });
       });
     });

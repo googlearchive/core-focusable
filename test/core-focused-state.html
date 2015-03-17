@@ -72,6 +72,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           expect(focusedState.focused).to.be.eql(false);
         });
       });
+
+      suite('when the focused state is disabled', function() {
+        setup(function() {
+          focusedState.disabled = true;
+        });
+
+        test('target will not be focusable', function() {
+          expect(focusTarget.hasAttribute('tabindex')).to.be.eql(false);
+        });
+      });
     });
   </script>
 </body>
