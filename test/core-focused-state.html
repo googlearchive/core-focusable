@@ -1,0 +1,88 @@
+<!doctype html>
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+<head>
+  <title>core-focused-state</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+  <script src="../../test-fixture/test-fixture-mocha.js"></script>
+  <script src="./test-helpers.js"></script>
+
+  <link rel="import" href="../../polymer/polymer.html">
+  <link rel="import" href="../../test-fixture/test-fixture.html">
+  <link rel="import" href="../core-focused-state.html">
+</head>
+<body>
+  <test-fixture id="TrivialFocusedState">
+    <template is="x-template">
+      <div tabindex="-1">
+        <core-focused-state></core-focused-state>
+      </div>
+    </template>
+  </test-fixture>
+
+  <script>
+    suite('<core-focused-state>', function() {
+      var focusedState;
+      var focusTarget;
+
+      setup(function() {
+        focusTarget = fixture('TrivialFocusedState');
+        focusedState = focusTarget.querySelector('core-focused-state');
+      });
+
+      test('targets the immediate parent in lieu of a host', function() {
+        expect(focusTarget).to.be.eql(focusedState.target);
+      });
+
+      suite('when the target is focused', function() {
+        test('target receives a focused attribute', function() {
+          expect(focusTarget.hasAttribute('focused')).to.be.eql(false);
+          focus(focusTarget);
+          expect(focusTarget.hasAttribute('focused')).to.be.eql(true);
+        });
+
+        test('focused property is true', function() {
+          expect(focusedState.focused).to.be.eql(false);
+          focus(focusTarget);
+          expect(focusedState.focused).to.be.eql(true);
+        });
+      });
+
+      suite('when the target is blurred', function() {
+        test('target loses the focused attribute', function() {
+          focus(focusTarget);
+          expect(focusTarget.hasAttribute('focused')).to.be.eql(true);
+          blur(focusTarget);
+          expect(focusTarget.hasAttribute('focused')).to.be.eql(false);
+        });
+
+        test('focused property is false', function() {
+          focus(focusTarget);
+          expect(focusedState.focused).to.be.eql(true);
+          blur(focusTarget);
+          expect(focusedState.focused).to.be.eql(false);
+        });
+      });
+
+      suite('when the focused state is disabled', function() {
+        setup(function() {
+          focusedState.disabled = true;
+        });
+
+        test('target will not be focusable', function() {
+          expect(focusTarget.hasAttribute('tabindex')).to.be.eql(false);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

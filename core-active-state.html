@@ -1,0 +1,163 @@
+<!--
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../polymer/polymer.html">
+<script>
+  Polymer({
+    is: 'core-active-state',
+
+    properties: {
+
+      /**
+       * If true, the element is currently active either because the
+       * user is touching it, or the button is a toggle
+       * and is currently in the active state.
+       *
+       * @attribute active
+       * @type boolean
+       * @default false
+       */
+      active: {
+        type: Boolean,
+        notify: true,
+        readOnly: true,
+        observer: 'activeChanged',
+        value: false
+      },
+
+      /**
+       * If true, the user is currently holding down the button.
+       *
+       * @attribute pressed
+       * @type boolean
+       * @default false
+       */
+      pressed: {
+        type: Boolean,
+        value: function() {
+          this._setPressed(this.pressed || false);
+        },
+        readOnly: true,
+        observer: 'pressedChanged'
+      },
+
+      /**
+       * If true, the button toggles the active state with each tap.
+       * Otherwise, the button becomes active when the user is holding
+       * it down.
+       *
+       * @attribute toggle
+       * @type boolean
+       * @default false
+       */
+      toggle: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * If true, the user cannot interact with this element.
+       *
+       * @attribute disabled
+       * @type boolean
+       * @default false
+       */
+      disabled: {
+        type: Boolean,
+        observer: 'disabledChanged',
+        value: false
+      }
+    },
+
+    get target() {
+      return this.host || this.parentNode;
+    },
+
+    configure: function() {
+      return {
+        boundDownHandler: this.onTargetDown.bind(this),
+        boundUpHandler: this.onTargetUp.bind(this)
+      };
+    },
+
+    attached: function() {
+      this.target.addEventListener('mousedown', this.boundDownHandler);
+      this.target.addEventListener('mouseup', this.boundUpHandler);
+      this.target.addEventListener('keydown', this.boundDownHandler);
+      this.target.addEventListener('keyup', this.boundUpHandler);
+    },
+
+    detached: function() {
+      this.target.removeEventListener('mousedown', this.boundDownHandler);
+      this.target.removeEventListener('mouseup', this.boundUpHandler);
+      this.target.removeEventListener('keydown', this.boundDownHandler);
+      this.target.removeEventListener('keyup', this.boundUpHandler);
+    },
+
+    onTargetDown: function(event) {
+      if (event.type === 'keydown' &&
+          event.keyCode !== 32 &&
+          event.keyCode !== 13) {
+        return;
+      }
+
+      if (event.keyCode === 13) {
+        this.async(function() {
+          this.click();
+        }, 1);
+
+        return;
+      }
+
+      this._setPressed(true);
+    },
+
+    onTargetUp: function(event) {
+      if (event.type === 'keyup' &&
+          event.keyCode !== 32) {
+        return;
+      }
+
+      if (this.pressed &&
+          event.type === 'keyup' &&
+          this.target instanceof HTMLElement) {
+
+        this.async(function() {
+          this.target.click();
+        }, 1);
+      }
+
+      this._setPressed(false);
+    },
+
+    pressedChanged: function() {
+      if (this.toggle) {
+        if (this.pressed) {
+          this._setActive(!this.active);
+        }
+      } else {
+        this._setActive(this.pressed);
+      }
+    },
+
+    activeChanged: function() {
+      if (this.active) {
+        this.target.setAttribute('active', '');
+      } else {
+        this.target.removeAttribute('active');
+      }
+    },
+
+    disabledChanged: function() {
+      if (this.disabled) {
+        this._setPressed(false);
+        this._setActive(false);
+      }
+    }
+  });
+</script>

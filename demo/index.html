@@ -1,0 +1,57 @@
+<!doctype html>
+<!--
+Copyright 2015 The Polymer Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+
+  <title>core-focusable</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="stylesheet" href="./demo.css">
+  <link rel="import" href="../../font-roboto/roboto.html">
+  <link rel="import" href="./quick-element.html">
+  <link rel="import" href="../core-focused-state.html">
+  <link rel="import" href="../core-active-state.html">
+  <link rel="import" href="../core-disabled-state.html">
+</head>
+<body>
+
+  <template is="quick-element" name="stateful-element">
+    <core-disabled-state disabled="{{disabled}}"></core-disabled-state>
+    <core-focused-state focused="{{focused}}" disabled="[[disabled]]"></core-focused-state>
+    <core-active-state active="{{active}}" disabled="[[disabled]]" toggle="[[toggle]]"></core-active-state>
+    <content></content>
+  </template>
+
+  <button id="Qux" tabindex="0">Native Button</button>
+  <stateful-element id="Foo" tabindex="0">Custom Button</stateful-element>
+  <stateful-element id="Baz" tabindex="0">Custom Toggle</stateful-element>
+  <stateful-element id="Bar" tabindex="0">Enable / Disable</stateful-element>
+
+  <script>
+    Baz.toggle = true;
+    ['click', 'keydown', 'keyup'].forEach(function(event) {
+      Qux.addEventListener(event, function() {
+        console.log('button', event);
+      });
+
+      Foo.addEventListener(event, function() {
+        console.log('custom', event);
+      });
+    });
+
+    Bar.addEventListener('click', function() {
+      Foo.disabled = !Foo.disabled;
+      Baz.disabled = !Baz.disabled;
+      Qux.disabled = !Qux.disabled;
+    });
+  </script>
+</body>
+</html>

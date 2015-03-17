@@ -1,0 +1,91 @@
+<!--
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../polymer/polymer.html">
+<script>
+  Polymer({
+    is: 'core-disabled-state',
+
+    properties: {
+
+      /**
+       * If true, the user cannot interact with this element.
+       *
+       * @attribute disabled
+       * @type boolean
+       * @default false
+       */
+      disabled: {
+        type: Boolean,
+        notify: true,
+        observer: 'disabledChanged',
+        value: false
+      },
+
+      disabledAttributeObserver: {
+        value: function () {
+          return new MutationObserver(
+            this.onTargetDisabledAttributeChanged.bind(this)
+          );
+        },
+      },
+
+      targetOldPointerEvents: {
+        type: String,
+        value: null
+      },
+    },
+
+    get target() {
+      return this.host || this.parentNode;
+    },
+
+    attached: function() {
+      this.disabledAttributeObserver.observe(this.target, {
+        attributes: true,
+        attributeFilter: [
+          'disabled'
+        ]
+      });
+      this.disabled = this.target.hasAttribute('disabled');
+    },
+
+    detached: function() {
+      this.disabledAttributeObserver.disconnect();
+    },
+
+    onTargetDisabledAttributeChanged: function() {
+      this.disabled = this.target.hasAttribute('disabled');
+    },
+
+    disabledChanged: function() {
+      if (this.disabled) {
+        if (!this.target.hasAttribute('disabled')) {
+          if (this.target.style.pointerEvents) {
+            this.targetOldPointerEvents = this.target.style.pointerEvents;
+          }
+
+          this.target.setAttribute('disabled', '');
+          this.target.setAttribute('aria-disabled', 'true');
+        }
+
+        this.target.style.pointerEvents = 'none';
+      } else {
+        if (this.targetOldPointerEvents != null) {
+          this.target.style.pointerEvents = this.targetOldPointerEvents;
+        } else {
+          this.target.style.pointerEvents = '';
+        }
+
+        this.target.removeAttribute('disabled');
+        this.target.removeAttribute('aria-disabled');
+        this.targetOldPointerEvents = null;
+      }
+    }
+  });
+</script>
