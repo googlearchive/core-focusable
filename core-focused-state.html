@@ -62,7 +62,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       };
     },
 
-    attached: function() {
+    // TODO(cdata): Originally this was all done on `attached` so that
+    // `attached` and `detached` could be inverse operations of each other.
+    // Non-ShadowDOM `attached` does not fire at an opportune time, however,
+    // leading to interaction failure conditions.
+    ready: function() {
       this.target.addEventListener('focus', this.boundFocusHandler, true);
       this.target.addEventListener('blur', this.boundBlurHandler, true);
     },
