@@ -63,8 +63,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this.disabled = this.target.hasAttribute('disabled');
     },
 
-    disabledChanged: function() {
-      if (this.disabled) {
+    disabledChanged: function(disabled, oldDisabled) {
+      if (oldDisabled === undefined &&
+          this.target.hasAttribute('disabled')) {
+        return;
+      }
+
+      if (disabled) {
         if (!this.target.hasAttribute('disabled')) {
           if (this.target.style.pointerEvents) {
             this.targetOldPointerEvents = this.target.style.pointerEvents;
