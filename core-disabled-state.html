@@ -64,7 +64,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     disabledChanged: function(disabled, oldDisabled) {
-      if (oldDisabled === undefined &&
+      if (!disabled &&
+          oldDisabled === undefined &&
           this.target.hasAttribute('disabled')) {
         return;
       }
