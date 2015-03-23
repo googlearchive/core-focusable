@@ -59,7 +59,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         suite('when clicked', function() {
           test('is activated', function(done) {
-            downAndUp(activeTarget, function() {
+            MockInteractions.downAndUp(activeTarget, function() {
               try {
                 expect(activeTarget.hasAttribute('active')).to.be.eql(true);
                 done();
@@ -70,8 +70,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           });
 
           test('is deactivated by a subsequent click', function(done) {
-            downAndUp(activeTarget, function() {
-              downAndUp(activeTarget, function() {
+            MockInteractions.downAndUp(activeTarget, function() {
+              MockInteractions.downAndUp(activeTarget, function() {
                 try {
                   expect(activeTarget.hasAttribute('active')).to.be.eql(false);
                   done();
@@ -88,16 +88,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         suite('when mouse is down', function() {
           test('target gets an active attribute', function() {
             expect(activeTarget.hasAttribute('active')).to.be.eql(false);
-            down(activeTarget);
+            MockInteractions.down(activeTarget);
             expect(activeTarget.hasAttribute('active')).to.be.eql(true);
           });
         });
 
         suite('when mouse is up', function() {
           test('target loses the active attribute', function() {
-            down(activeTarget);
+            MockInteractions.down(activeTarget);
             expect(activeTarget.hasAttribute('active')).to.be.eql(true);
-            up(activeTarget);
+            MockInteractions.up(activeTarget);
             expect(activeTarget.hasAttribute('active')).to.be.eql(false);
           });
         });
@@ -108,7 +108,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           activeTarget.addEventListener('click', function() {
             done();
           });
-          pressSpace(activeTarget);
+          MockInteractions.pressSpace(activeTarget);
         });
 
         test('only triggers click after the key is released', function(done) {
@@ -127,7 +127,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
           });
 
-          pressSpace(activeTarget);
+          MockInteractions.pressSpace(activeTarget);
         });
       });
 
@@ -137,7 +137,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             done();
           });
 
-          pressEnter(activeTarget);
+          MockInteractions.pressEnter(activeTarget);
         });
 
         test('only triggers click before the key is released', function(done) {
@@ -156,7 +156,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
           });
 
-          pressEnter(activeTarget);
+          MockInteractions.pressEnter(activeTarget);
         });
       });
     });

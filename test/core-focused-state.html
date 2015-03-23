@@ -46,29 +46,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       suite('when the target is focused', function() {
         test('target receives a focused attribute', function() {
           expect(focusTarget.hasAttribute('focused')).to.be.eql(false);
-          focus(focusTarget);
+          MockInteractions.focus(focusTarget);
           expect(focusTarget.hasAttribute('focused')).to.be.eql(true);
         });
 
         test('focused property is true', function() {
           expect(focusedState.focused).to.be.eql(false);
-          focus(focusTarget);
+          MockInteractions.focus(focusTarget);
           expect(focusedState.focused).to.be.eql(true);
         });
       });
 
       suite('when the target is blurred', function() {
         test('target loses the focused attribute', function() {
-          focus(focusTarget);
+          MockInteractions.focus(focusTarget);
           expect(focusTarget.hasAttribute('focused')).to.be.eql(true);
-          blur(focusTarget);
+          MockInteractions.blur(focusTarget);
           expect(focusTarget.hasAttribute('focused')).to.be.eql(false);
         });
 
         test('focused property is false', function() {
-          focus(focusTarget);
+          MockInteractions.focus(focusTarget);
           expect(focusedState.focused).to.be.eql(true);
-          blur(focusTarget);
+          MockInteractions.blur(focusTarget);
           expect(focusedState.focused).to.be.eql(false);
         });
       });
