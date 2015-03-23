@@ -1,60 +1,75 @@
-function focus (target) {
-  Polymer.Base.fire.call(target, 'focus');
-}
+(function(global) {
+  'use strict';
 
-function blur (target) {
-  Polymer.Base.fire.call(target, 'blur');
-}
+  function focus (target) {
+    Polymer.Base.fire.call(target, 'focus');
+  }
 
-function down (target) {
-  Polymer.Base.fire.call(target, 'mousedown');
-}
+  function blur (target) {
+    Polymer.Base.fire.call(target, 'blur');
+  }
 
-function up (target) {
-  Polymer.Base.fire.call(target, 'mouseup');
-}
+  function down (target) {
+    Polymer.Base.fire.call(target, 'mousedown');
+  }
 
-function downAndUp (target, callback) {
-  down(target);
-  Polymer.Base.async(function() {
-    up(target);
+  function up (target) {
+    Polymer.Base.fire.call(target, 'mouseup');
+  }
 
-    callback && callback();
-  });
-}
+  function downAndUp (target, callback) {
+    down(target);
+    Polymer.Base.async(function() {
+      up(target);
 
-function keyboardEventFor (type, keyCode) {
-  var event = new CustomEvent(type);
+      callback && callback();
+    });
+  }
 
-  event.keyCode = keyCode;
-  event.code = keyCode;
+  function keyboardEventFor (type, keyCode) {
+    var event = new CustomEvent(type);
 
-  return event;
-}
+    event.keyCode = keyCode;
+    event.code = keyCode;
 
-function keyEventOn (target, type, keyCode) {
-  target.dispatchEvent(keyboardEventFor(type, keyCode));
-}
+    return event;
+  }
 
-function keyDownOn (target, keyCode) {
-  keyEventOn(target, 'keydown', keyCode);
-}
+  function keyEventOn (target, type, keyCode) {
+    target.dispatchEvent(keyboardEventFor(type, keyCode));
+  }
 
-function keyUpOn (target, keyCode) {
-  keyEventOn(target, 'keyup', keyCode);
-}
+  function keyDownOn (target, keyCode) {
+    keyEventOn(target, 'keydown', keyCode);
+  }
 
-function pressAndReleaseKeyOn (target, keyCode) {
-  keyDownOn(target, keyCode);
-  Polymer.Base.async(function () {
-    keyUpOn(target, keyCode);
-  }, 1);
-}
+  function keyUpOn (target, keyCode) {
+    keyEventOn(target, 'keyup', keyCode);
+  }
 
-function pressEnter (target) {
-  pressAndReleaseKeyOn(target, 13);
-}
+  function pressAndReleaseKeyOn (target, keyCode) {
+    keyDownOn(target, keyCode);
+    Polymer.Base.async(function () {
+      keyUpOn(target, keyCode);
+    }, 1);
+  }
 
-function pressSpace (target) {
-  pressAndReleaseKeyOn(target, 32);
-}
+  function pressEnter (target) {
+    pressAndReleaseKeyOn(target, 13);
+  }
+
+  function pressSpace (target) {
+    pressAndReleaseKeyOn(target, 32);
+  }
+
+  global.MockInteractions = {
+    focus: focus,
+    blur: blur,
+    down: down,
+    up: up,
+    downAndUp: downAndUp,
+    pressEnter: pressEnter,
+    pressSpace: pressSpace
+  };
+})(this);
+
