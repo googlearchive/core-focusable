@@ -24,7 +24,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <test-fixture id="TrivialActiveState">
     <template is="x-template">
       <div>
-        <core-active-state></core-active-state>
+        <template is="core-active-state"></template>
       </div>
     </template>
   </test-fixture>
@@ -32,7 +32,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <test-fixture id="ToggleActiveState">
     <template is="x-template">
       <div>
-        <core-active-state toggle></core-active-state>
+        <template is="core-active-state" toggle></template>
       </div>
     </template>
   </test-fixture>
@@ -44,7 +44,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       setup(function() {
         activeTarget = fixture('TrivialActiveState');
-        activeState = activeTarget.querySelector('core-active-state');
+        activeState = activeTarget.querySelector('[is=core-active-state]');
       });
 
       test('targets the immediate parent in lieu of a host', function() {
@@ -54,7 +54,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       suite('active state with toggle attribute', function() {
         setup(function() {
           activeTarget = fixture('ToggleActiveState');
-          activeState = activeTarget.querySelector('core-active-state');
+          activeState = activeTarget.querySelector('[is=core-active-state]');
         });
 
         suite('when clicked', function() {

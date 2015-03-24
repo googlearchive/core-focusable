@@ -24,9 +24,9 @@ license that can be found in the LICENSE file.
 <body>
 
   <template is="quick-element" name="stateful-element">
-    <core-disabled-state disabled="{{disabled}}"></core-disabled-state>
-    <core-focused-state focused="{{focused}}" disabled="[[disabled]]"></core-focused-state>
-    <core-active-state active="{{active}}" disabled="[[disabled]]" toggle="[[toggle]]"></core-active-state>
+    <template is="core-disabled-state" disabled="{{disabled}}"></template>
+    <template is="core-focused-state" focused="{{focused}}" disabled="[[disabled]]"></template>
+    <template is="core-active-state" active="{{active}}" disabled="[[disabled]]" toggle="[[toggle]]"></template>
     <content></content>
   </template>
 
