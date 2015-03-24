@@ -23,7 +23,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <test-fixture id="TrivialDisabledState">
     <template is="x-template">
       <div>
-        <core-disabled-state></core-disabled-state>
+        <template is="core-disabled-state"></template>
       </div>
     </template>
   </test-fixture>
@@ -35,7 +35,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       setup(function() {
         disableTarget = fixture('TrivialDisabledState');
-        disabledState = disableTarget.querySelector('core-disabled-state');
+        disabledState = disableTarget.querySelector('[is=core-disabled-state]');
       });
 
       test('targets the immediate parent in lieu of a host', function() {

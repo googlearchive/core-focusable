@@ -24,7 +24,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <test-fixture id="TrivialFocusedState">
     <template is="x-template">
       <div tabindex="-1">
-        <core-focused-state></core-focused-state>
+        <template is="core-focused-state"></template>
       </div>
     </template>
   </test-fixture>
@@ -36,7 +36,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       setup(function() {
         focusTarget = fixture('TrivialFocusedState');
-        focusedState = focusTarget.querySelector('core-focused-state');
+        focusedState = focusTarget.querySelector('[is=core-focused-state]');
       });
 
       test('targets the immediate parent in lieu of a host', function() {
