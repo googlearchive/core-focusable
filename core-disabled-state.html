@@ -69,19 +69,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       if (!disabled &&
           oldDisabled === undefined &&
           this.target.hasAttribute('disabled')) {
-        return;
+        disabled = true;
       }
 
       if (disabled) {
         if (!this.target.hasAttribute('disabled')) {
-          if (this.target.style.pointerEvents) {
-            this.targetOldPointerEvents = this.target.style.pointerEvents;
-          }
-
           this.target.setAttribute('disabled', '');
-          this.target.setAttribute('aria-disabled', 'true');
         }
 
+        if (this.target.style.pointerEvents) {
+          this.targetOldPointerEvents = this.target.style.pointerEvents;
+        }
+
+        this.target.setAttribute('aria-disabled', 'true');
         this.target.style.pointerEvents = 'none';
       } else {
         if (this.targetOldPointerEvents != null) {
