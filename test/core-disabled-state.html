@@ -28,38 +28,64 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </template>
   </test-fixture>
 
+  <test-fixture id="InitiallyDisabledState">
+    <template is="x-template">
+      <div disabled>
+        <template is="core-disabled-state"></template>
+      </div>
+    </template>
+  </test-fixture>
+
   <script>
     suite('<core-disabled-state>', function() {
       var disabledState;
       var disableTarget;
 
-      setup(function() {
-        disableTarget = fixture('TrivialDisabledState');
-        disabledState = disableTarget.querySelector('[is=core-disabled-state]');
-      });
-
-      test('targets the immediate parent in lieu of a host', function() {
-        expect(disableTarget).to.be.eql(disabledState.target);
-      });
-
-      suite('when disabled is true', function() {
-        test('target receives a disabled attribute', function() {
-          disabledState.disabled = true;
-          expect(disableTarget.hasAttribute('disabled')).to.be.eql(true);
+      suite('a trivial disabled state', function() {
+        setup(function() {
+          disableTarget = fixture('TrivialDisabledState');
+          disabledState = disableTarget.querySelector('[is=core-disabled-state]');
         });
 
-        test('target receives an appropriate aria attribute', function() {
-          disabledState.disabled = true;
+        test('targets the immediate parent in lieu of a host', function() {
+          expect(disableTarget).to.be.eql(disabledState.target);
+        });
+
+        suite('when disabled is true', function() {
+          test('target receives a disabled attribute', function() {
+            disabledState.disabled = true;
+            expect(disableTarget.hasAttribute('disabled')).to.be.eql(true);
+          });
+
+          test('target receives an appropriate aria attribute', function() {
+            disabledState.disabled = true;
+            expect(disableTarget.getAttribute('aria-disabled')).to.be.eql('true');
+          });
+        });
+
+        suite('when disabled is false', function() {
+          test('target loses the disabled attribute', function() {
+            disabledState.disabled = true;
+            expect(disableTarget.hasAttribute('disabled')).to.be.eql(true);
+            disabledState.disabled = false;
+            expect(disableTarget.hasAttribute('disabled')).to.be.eql(false);
+          });
+        });
+      });
+
+      suite('a state with an initially disabled target', function() {
+        setup(function() {
+          disableTarget = fixture('InitiallyDisabledState');
+          disabledState = disableTarget.querySelector('[is=core-disabled-state]');
+        });
+
+        test('preserves the disabled attribute on target', function() {
+          expect(disableTarget.hasAttribute('disabled')).to.be.eql(true);
+          expect(disabledState.disabled).to.be.eql(true);
+        });
+
+        test('adds `aria-disabled` to the target', function() {
           expect(disableTarget.getAttribute('aria-disabled')).to.be.eql('true');
-        });
-      });
-
-      suite('when disabled is false', function() {
-        test('target loses the disabled attribute', function() {
-          disabledState.disabled = true;
-          expect(disableTarget.hasAttribute('disabled')).to.be.eql(true);
-          disabledState.disabled = false;
-          expect(disableTarget.hasAttribute('disabled')).to.be.eql(false);
         });
       });
     });
