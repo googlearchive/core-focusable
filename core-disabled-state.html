@@ -30,6 +30,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       disabledAttributeObserver: {
+        type: Object,
         value: function () {
           return new MutationObserver(
             this.onTargetDisabledAttributeChanged.bind(this)
@@ -37,6 +38,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
       },
 
+      /**
+       * The old value of the target's pointer-events.
+       *
+       * @type ?string
+       * @default null
+       */
       targetOldPointerEvents: {
         type: String,
         value: null
